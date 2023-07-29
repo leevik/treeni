@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
 
 app.use(cors())
 //app.use(express.json())
@@ -24,6 +26,12 @@ let blogs = [
   }
 ]
 
+let users = [
+  {
+
+  }
+]
+
 let jopas = {
   "haloo": "terve",
   "katti": "maku"
@@ -38,6 +46,29 @@ app.get('/api/blogs', (req, res) => {
 })
 app.get('/api/jopas', (req, res) => {
   res.json(jopas)
+})
+
+app.post('/api/login', async (request,response)=>{
+  const {username, password} = request.body
+
+  const saltRounds = 10
+  const passwordHash = await bcrypt.hash(password, saltRounds)
+
+  if (!body.content) {
+    return response.status(400).json({ 
+      error: 'content missing' 
+    })
+  }
+
+  const user = {
+    username: username,
+    password: passwordHash
+  }
+
+  users = users.concat(user)
+
+  response.json(user)
+
 })
 
 const generateId = () => {
